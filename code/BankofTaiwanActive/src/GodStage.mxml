@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import event.TiBallotEvent;
+			
+			import handler.XmlDataHandler;
+			
+			import lib.TiDisableTextField;
+			
+			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
+			private var m_timer:Timer = new Timer(5000,1)
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				fnInit();
+			}
+			
+			private function fnInit():void
+			{
+				fnHideGod();
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMsg.btn_goto_index);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMsg.btn_sign);
+				TiDisableTextField.fnDisableAllTextField(mcMsg);
+				mcMsg.btn_goto_index.addEventListener(MouseEvent.CLICK,fnGotoIndex);
+				mcMsg.btn_sign.addEventListener(MouseEvent.CLICK,fnSign);
+			}
+			
+			private function fnHideGod():void
+			{
+				mcGuanGong.visible=false;
+				mcGuanyin.visible =false;
+				mcMatchmake.visible =false;
+				mcMiLeBuddha.visible=false;
+				mcWealth.visible=false;
+				mcWenchang.visible=false;
+				mcMsg.visible=false;
+			}
+			public function fnRequestXMLDataHandler():void
+			{
+				fnHideGod();
+				m_xmlDataHandler.fnRequestXmlData();
+				m_xmlDataHandler.addEventListener(TiBallotEvent.GET_BALLOT_XML_DATA_EVENT,fnGetBallotDataHandler);
+				m_timer.addEventListener(TimerEvent.TIMER_COMPLETE,fnShowBallotResult);
+				m_timer.start();
+			}
+			
+			private function fnGetBallotDataHandler(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function fnGotoIndex(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function fnSign(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				fnHideGod();
+				var ev:TiBallotEvent =new TiBallotEvent(TiBallotEvent.RESET_BALLOT_EVENT);
+				dispatchEvent(ev);
+			}
+			
+			
+			
+			protected function fnShowBallotResult(event:TimerEvent):void
+			{
+				// TODO Auto-generated method stub
+				m_timer.reset();
+				var ran:int = Math.round(Math.random()*5);
+				trace(ran);
+				switch(ran)
+				{
+					case 0:
+						mcGuanGong.visible=true;
+						break;
+					case 1:
+						mcGuanyin.visible=true;
+						break;
+					
+					case 2:
+						mcMatchmake.visible=true;
+						break;
+					case 3:
+						mcMiLeBuddha.visible=true;
+						break;
+					case 4:
+						mcWealth.visible=true;
+						break;
+					case 5:
+						mcWenchang.visible=true;
+						break;
+					
+				}
+				mcMsg.visible=true;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:God_GuanGong id="mcGuanGong" />
+	<local:God_Guanyin id="mcGuanyin"/>
+	<local:God_Matchmaker id="mcMatchmake"/>
+	<local:God_MiLeBuddha id="mcMiLeBuddha"/>
+	<local:God_Wealth id="mcWealth"/>
+	<local:God_Wenchang id="mcWenchang"/>
+	<local:action id="mcMsg" x="58.9" y="384.5"/>
+</s:Group>

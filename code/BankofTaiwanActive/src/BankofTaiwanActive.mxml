@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import event.TiBallotEvent;
+			
+			import lib.AppSetting;
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				Security.allowDomain("*");
+				// TODO Auto-generated method stub
+				activeStage.addEventListener(TiBallotEvent.REQUEST_BALLOT_XML_DATA,fnRequestXMLDataHandler);
+				AppSetting.m_RootDomain = AppSetting.DOMAIN;
+				godStage.addEventListener(TiBallotEvent.RESET_BALLOT_EVENT,fnResetBallot);
+			}
+			
+			
+			
+			
+			protected function fnRequestXMLDataHandler(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				godStage.fnRequestXMLDataHandler();
+			}
+			
+			protected function fnResetBallot(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				activeStage.fnReset();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:ActiveStage id="activeStage"/>
+	<local:GodStage id="godStage" x="100" y="-10"/>
+</s:Application>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)" xmlns:local="*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import event.TiBallotEvent;
+			
+			import lib.TiDisableTextField;
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign1);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign2);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign3);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign4);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign5);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcAllSign.Sign6);
+				mcAllSign.Sign1.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+				mcAllSign.Sign2.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+				mcAllSign.Sign3.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+				mcAllSign.Sign4.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+				mcAllSign.Sign5.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+				mcAllSign.Sign6.addEventListener(MouseEvent.CLICK,fnSignClickHandler);
+			}
+			
+			private function fnSignClickHandler(e:MouseEvent):void
+			{
+				mcLion.visible = true;
+				var ev:TiBallotEvent = new TiBallotEvent(TiBallotEvent.REQUEST_BALLOT_XML_DATA);
+				dispatchEvent(ev);
+			}
+			
+			public function fnReset():void
+			{
+				mcLion.visible=false;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:Sign_mc id="mcAllSign"/>
+	<local:Lion id="mcLion" visible="false"/>
+</s:Group>
