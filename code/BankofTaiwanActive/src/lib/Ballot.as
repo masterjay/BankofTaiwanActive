@@ -7,9 +7,9 @@ package lib
 			
 		}
 		
-		public var m_Ballot:int = 0;
-		public var m_AllTimes:int = 0;
-		public var m_UsedTimes:int = 0;
-		public var m_CanUsedTimes:int = 0;
+		public var m_nBallot:int = 1;
+		public var m_AllTimes:int = 1;
+		public var m_UsedTimes:int = 1;
+		public var m_CanUsedTimes:int = 1;
 	}
 }

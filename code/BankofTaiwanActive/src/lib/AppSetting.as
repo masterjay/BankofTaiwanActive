@@ -7,7 +7,8 @@ package lib
 	public class AppSetting
 	{
 		
-		public static var DOMAIN:String = "http://haosen.drowl.com.tw/";
+	//	public static var DOMAIN:String = "http://haosen.drowl.com.tw/";
+		public static var DOMAIN:String = "../";
 		//public static var DOMAIN:String = "http://isabelle.drowl.com.tw/Mooncake2014/conn/";
 	//	public static var GET_CUSTOMER_DATA:String  = "assets/customer.xml"		
 	

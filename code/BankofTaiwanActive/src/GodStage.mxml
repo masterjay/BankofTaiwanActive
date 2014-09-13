@@ -10,10 +10,12 @@
 			
 			import handler.XmlDataHandler;
 			
+			import lib.Ballot;
 			import lib.TiDisableTextField;
 			
 			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
-			private var m_timer:Timer = new Timer(5000,1)
+			private var m_timer:Timer = new Timer(3000,1)
+			private var m_Ballot:Ballot	
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
@@ -49,16 +51,22 @@
 				m_timer.start();
 			}
 			
-			private function fnGetBallotDataHandler(event:Event):void
+			private function fnGetBallotDataHandler(ev:TiBallotEvent):void
 			{
 				// TODO Auto-generated method stub
-				
+				m_Ballot = new Ballot();
+				m_Ballot.m_AllTimes = ev.m_ballot.m_AllTimes;
+				m_Ballot.m_nBallot = ev.m_ballot.m_nBallot;
+				m_Ballot.m_CanUsedTimes = ev.m_ballot.m_CanUsedTimes;
+				m_Ballot.m_UsedTimes = ev.m_ballot.m_UsedTimes;
 			}
 			
 			protected function fnGotoIndex(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				
+				var myLink:String="../index.html";
+				var linkRequest:URLRequest=new URLRequest(myLink);
+				navigateToURL(linkRequest);
 			}
 			
 			protected function fnSign(event:MouseEvent):void
@@ -75,31 +83,45 @@
 			{
 				// TODO Auto-generated method stub
 				m_timer.reset();
-				var ran:int = Math.round(Math.random()*5);
-				trace(ran);
-				switch(ran)
+				
+				switch(m_Ballot.m_nBallot)
 				{
-					case 0:
-						mcGuanGong.visible=true;
-						break;
 					case 1:
 						mcGuanyin.visible=true;
 						break;
-					
 					case 2:
 						mcMatchmake.visible=true;
 						break;
 					case 3:
-						mcMiLeBuddha.visible=true;
+						mcWenchang.visible=true;
 						break;
 					case 4:
 						mcWealth.visible=true;
 						break;
 					case 5:
-						mcWenchang.visible=true;
+						mcGuanGong.visible=true;
+						break;
+						case 6:
+						mcMiLeBuddha.visible=true;
 						break;
 					
 				}
+				
+				mcMsg.txt_remaining_choices.text = m_Ballot.m_CanUsedTimes.toString();
+				mcMsg.txt_total_choices.text = m_Ballot.m_AllTimes.toString();
+				mcMsg.txt_used_choices.text = m_Ballot.m_UsedTimes.toString();
+				var tf:TextFormat = new TextFormat();
+				if(m_Ballot.m_CanUsedTimes == 0)
+				{
+					tf.color =  0xFF0000 ;
+					mcMsg.btn_sign.visible=false;
+				}
+				else
+				{
+					tf.color =  0x000000 ;
+					mcMsg.btn_sign.visible=true;
+				}
+				mcMsg.txt_remaining_choices.setTextFormat(tf);
 				mcMsg.visible=true;
 			}
 			

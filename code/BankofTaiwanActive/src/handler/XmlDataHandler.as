@@ -42,10 +42,14 @@ package handler
 			
 				trace(xml.children().length());
 				var b:Ballot=new Ballot();
-				b.m_Ballot=xml.output.Ballot;
-				b.m_AllTimes=xml.output.AllTimes;
-				b.m_UsedTimes=xml.output.UsedTimes;
-				b.m_CanUsedTimes=xml.output.CanUsedTimes;
+				/*b.m_nBallot=8;
+				b.m_AllTimes=5;
+				b.m_UsedTimes=3;
+				b.m_CanUsedTimes=0;*/
+				b.m_nBallot=xml.Ballot;
+				b.m_AllTimes=xml.AllTimes;
+				b.m_UsedTimes=xml.UsedTimes;
+				b.m_CanUsedTimes=xml.CanUsedTimes;
 			
 			
 			
