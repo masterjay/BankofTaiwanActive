@@ -101,7 +101,7 @@
 					case 5:
 						mcGuanGong.visible=true;
 						break;
-						case 6:
+					case 6:
 						mcMiLeBuddha.visible=true;
 						break;
 					

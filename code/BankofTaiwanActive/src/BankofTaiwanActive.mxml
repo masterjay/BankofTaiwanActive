@@ -40,5 +40,5 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<local:ActiveStage id="activeStage"/>
-	<local:GodStage id="godStage" x="100" y="-10"/>
+	<local:GodStage id="godStage" x="100" y="-15"/>
 </s:Application>
