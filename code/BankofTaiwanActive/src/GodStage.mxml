@@ -4,6 +4,10 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			
 			import event.TiBallotEvent;
@@ -11,6 +15,7 @@
 			import handler.XmlDataHandler;
 			
 			import lib.Ballot;
+			import lib.GameLog;
 			import lib.TiDisableTextField;
 			
 			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
@@ -44,29 +49,51 @@
 			}
 			public function fnRequestXMLDataHandler():void
 			{
+				
+				m_timer.addEventListener(TimerEvent.TIMER_COMPLETE,fnTimerCompleteHandler);
+				m_timer.start();
+			}
+			
+			private function fnTimerCompleteHandler(e:TimerEvent):void
+			{
 				fnHideGod();
 				m_xmlDataHandler.fnRequestXmlData();
 				m_xmlDataHandler.addEventListener(TiBallotEvent.GET_BALLOT_XML_DATA_EVENT,fnGetBallotDataHandler);
-				m_timer.addEventListener(TimerEvent.TIMER_COMPLETE,fnShowBallotResult);
-				m_timer.start();
 			}
 			
 			private function fnGetBallotDataHandler(ev:TiBallotEvent):void
 			{
 				// TODO Auto-generated method stub
+				if(GameLog.m_strAlert!="")
+				{
+					Alert.show(GameLog.m_strAlert,"",Alert.OK,null,fnAlertListener);
+					return;
+				}
 				m_Ballot = new Ballot();
 				m_Ballot.m_AllTimes = ev.m_ballot.m_AllTimes;
 				m_Ballot.m_nBallot = ev.m_ballot.m_nBallot;
 				m_Ballot.m_CanUsedTimes = ev.m_ballot.m_CanUsedTimes;
 				m_Ballot.m_UsedTimes = ev.m_ballot.m_UsedTimes;
+				fnShowBallotResult();
+			}
+			
+			private function fnAlertListener(eventObj:CloseEvent):void 
+			{
+				if (eventObj.detail==Alert.OK) 
+				{
+					var myLink:String="../Default.aspx";
+					var linkRequest:URLRequest=new URLRequest(myLink);
+					navigateToURL(linkRequest,"_self");
+				}
+				
 			}
 			
 			protected function fnGotoIndex(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				var myLink:String="../index.html";
+				var myLink:String="../Default.aspx";
 				var linkRequest:URLRequest=new URLRequest(myLink);
-				navigateToURL(linkRequest);
+				navigateToURL(linkRequest,"_self");
 			}
 			
 			protected function fnSign(event:MouseEvent):void
@@ -75,11 +102,12 @@
 				fnHideGod();
 				var ev:TiBallotEvent =new TiBallotEvent(TiBallotEvent.RESET_BALLOT_EVENT);
 				dispatchEvent(ev);
+				
 			}
 			
 			
 			
-			protected function fnShowBallotResult(event:TimerEvent):void
+			protected function fnShowBallotResult():void
 			{
 				// TODO Auto-generated method stub
 				m_timer.reset();
@@ -107,21 +135,27 @@
 					
 				}
 				
-				mcMsg.txt_remaining_choices.text = m_Ballot.m_CanUsedTimes.toString();
-				mcMsg.txt_total_choices.text = m_Ballot.m_AllTimes.toString();
-				mcMsg.txt_used_choices.text = m_Ballot.m_UsedTimes.toString();
-				var tf:TextFormat = new TextFormat();
+				mcMsg.txt_remaining_choices.text = "目前尚餘 "+m_Ballot.m_CanUsedTimes+" 次選擇機會";
+				mcMsg.txt_total_choices.text = "您共有 " + m_Ballot.m_AllTimes + " 次選擇機會";
+				mcMsg.txt_used_choices.text = "已選擇 "+ m_Ballot.m_UsedTimes +" 次";
+				//var tf:TextFormat = new TextFormat();
+				//m_Ballot.m_CanUsedTimes=0;
 				if(m_Ballot.m_CanUsedTimes == 0)
 				{
-					tf.color =  0xFF0000 ;
+				//	tf.color =  0xFF0000 ;
+					
+					mcMsg.mc_remaining_zero.visible = true;
+					mcMsg.txt_remaining_choices.visible = false;
 					mcMsg.btn_sign.visible=false;
 				}
 				else
 				{
-					tf.color =  0x000000 ;
+					//tf.color =  0x000000 ;
+					mcMsg.mc_remaining_zero.visible = false;
+					mcMsg.txt_remaining_choices.visible = true;
 					mcMsg.btn_sign.visible=true;
 				}
-				mcMsg.txt_remaining_choices.setTextFormat(tf);
+				//mcMsg.txt_remaining_choices.setTextFormat(tf);
 				mcMsg.visible=true;
 			}
 			

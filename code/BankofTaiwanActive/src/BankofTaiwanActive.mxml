@@ -4,12 +4,20 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"  backgroundAlpha="0.0"  creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
 	<fx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			
 			import event.TiBallotEvent;
 			
-			import lib.AppSetting;
+			import handler.XmlDataHandler;
 			
+			import lib.AppSetting;
+			import lib.GameLog;
+			
+			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				Security.allowDomain("*");
@@ -17,6 +25,8 @@
 				activeStage.addEventListener(TiBallotEvent.REQUEST_BALLOT_XML_DATA,fnRequestXMLDataHandler);
 				AppSetting.m_RootDomain = AppSetting.DOMAIN;
 				godStage.addEventListener(TiBallotEvent.RESET_BALLOT_EVENT,fnResetBallot);
+				m_xmlDataHandler.fnRequestGameLog();
+				m_xmlDataHandler.addEventListener(TiBallotEvent.GET_GAMELOG_XML_DATA_EVENT,fnGetGameLogHandler);
 			}
 			
 			
@@ -34,6 +44,25 @@
 				activeStage.fnReset();
 			}
 			
+			protected function fnGetGameLogHandler(e:TiBallotEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(GameLog.m_strGameLogId =="-1")
+				{
+					Alert.show(GameLog.m_strAlert,"",Alert.OK,null,fnAlertListener);
+				}
+			}
+			
+			private function fnAlertListener(eventObj:CloseEvent):void 
+			{
+				if (eventObj.detail==Alert.OK) 
+				{
+					var myLink:String="../Default.aspx";
+					var linkRequest:URLRequest=new URLRequest(myLink);
+					navigateToURL(linkRequest,"_self");
+				}
+				
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
