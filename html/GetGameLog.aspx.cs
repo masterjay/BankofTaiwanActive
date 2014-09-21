@@ -21,17 +21,9 @@ public partial class GetGameLog : System.Web.UI.Page
     }
     protected void XMLTag()
     {
+        string strMessage = "";
         string strID = "";
-        string strGameLogId = "";
-        string strPrize1 = "";
-        string strPrize2 = "";
-        string strPrize3 = "";
-        string strPrize4 = "";
-        string strPrize5 = "";
-        string strPrize6 = "";
-        string strPrize7 = "";
-        string strPrize8 = "";
-
+        string strGameLogId = "-1";
         if (Session["Event_IDNo"] != null)
         {
             strID = Session["Event_IDNo"].ToString();
@@ -40,38 +32,17 @@ public partial class GetGameLog : System.Web.UI.Page
             {
                 ConnectionStringSettings connSettings = ConfigurationManager.ConnectionStrings["ConnString"];
                 SqlConnection conn = new SqlConnection(connSettings.ConnectionString);
-                conn.Open();
-
-                SqlCommand cmd = new SqlCommand("usp_SelectGameLogId", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                SqlParameter parm_ID = new SqlParameter("@ID", SqlDbType.VarChar, 50);
-                parm_ID.Value = strID;
-                cmd.Parameters.Add(parm_ID);
-
-                SqlDataReader myReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                while (myReader.Read())
+                using (conn)
                 {
-                    strPrize1 = myReader["Prize1"].ToString();
-                    strPrize2 = myReader["Prize2"].ToString();
-                    strPrize3 = myReader["Prize3"].ToString();
-                    strPrize4 = myReader["Prize4"].ToString();
-                    strPrize5 = myReader["Prize5"].ToString();
-                    strPrize6 = myReader["Prize6"].ToString();
-                    strPrize7 = myReader["Prize7"].ToString();
-                    strPrize8 = myReader["Prize8"].ToString();
-
-                    strGameLogId = myReader["GameLogId"].ToString();
+                    SqlCommand cmd = new SqlCommand("usp_SelectGameLogId", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    conn.Open();
+                    SqlParameter parm_ID = new SqlParameter("@ID", SqlDbType.VarChar, 50);
+                    parm_ID.Value = strID;
+                    cmd.Parameters.Add(parm_ID);
+                    strGameLogId = cmd.ExecuteScalar().ToString();
+                    cmd.Dispose();
                 }
-
-                myReader.Close();
-                myReader.Dispose();
-
-               // strGameLogId = cmd.ExecuteScalar().ToString();
-                cmd.Dispose();
-                conn.Close();
-                conn.Dispose();
             }
             catch (Exception ex)
             {
@@ -80,7 +51,14 @@ public partial class GetGameLog : System.Web.UI.Page
         }
         else
         {
+            strMessage = "請至網銀登入後才可以進行遊戲喔!";
             ErrorLog.Add(HttpContext.Current.User.Identity.Name, HttpContext.Current.Request.ServerVariables["PATH_INFO"].ToString(), "Session 抓不到值!!", "XMLTag");
+        }
+
+        if (strGameLogId == "")
+        {
+            strGameLogId = "-1";
+            strMessage = "您目前已選完抽籤機會!再去交易吧!";
         }
 
        // ErrorLog.Add(strID, HttpContext.Current.Request.ServerVariables["PATH_INFO"].ToString(), "GetGameLog " + strGameLogId , "XMLTag");
@@ -91,15 +69,8 @@ public partial class GetGameLog : System.Web.UI.Page
 
         string strXML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         strXML += "<output>\n";
+        strXML += "  <alert>" + strMessage + "</alert>\n";
         strXML += "  <GameLogId>" + strGameLogId + "</GameLogId>\n";
-        strXML += "  <prize1>" + strPrize1 + "</prize1>\n";
-        strXML += "  <prize2>" + strPrize2 + "</prize2>\n";
-        strXML += "  <prize3>" + strPrize3 + "</prize3>\n";
-        strXML += "  <prize4>" + strPrize4 + "</prize4>\n";
-        strXML += "  <prize5>" + strPrize5 + "</prize5>\n";
-        strXML += "  <prize6>" + strPrize6 + "</prize6>\n";
-        strXML += "  <prize7>" + strPrize7 + "</prize7>\n";
-        strXML += "  <prize8>" + strPrize8 + "</prize8>\n";
         strXML += "</output>";
         Response.Write(strXML);
     }

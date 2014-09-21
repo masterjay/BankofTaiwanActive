@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="PlayGame.aspx.cs" Inherits="PlayGame" %>
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -15,9 +15,19 @@
             margin-bottom: 0px;
             background-color: #7fd7f8;
         }
+		img { margin:0; padding:0; border:0;}
+		#flashContent {
+            width:894px;
+            height:575px;
+            min-width:894px;
+            min-height:575px;
+            overflow:hidden;
+        }
+
         -->
     </style>
     <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+    <script src="JSfiles/swfobject.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -32,18 +42,26 @@
           <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="894" height="432">
             <param name="movie" value="flash/actiontop.swf" />
             <param name="quality" value="high" />
-            <embed src="flash/actiontop.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="894" height="432"></embed>
-          </object>
-          </noscript>
+            <embed src="flash/actiontop.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="894" height="432"></embed></object></noscript>
                 </td>
             </tr>
             <tr>
-                <td height="20">
-                    <img src="image/web02_01.jpg" width="894" height="82" /></td>
+                <td><img src="image/web02_01.jpg" width="894" height="82" /></td>
             </tr>
             <tr>
                 <td>
                     <!-- flash -->
+                    <script type="text/javascript">
+					var flashvars = {};
+					var params = {};
+                    params.allowScriptAccess = "always";
+                    params.allowFullScreen = "false";
+                    params.wmode = "transparent";
+					var attributes = {};
+					var version ="2014.09.15"
+					swfobject.embedSWF("flash/BankofTaiwanActive.swf?"+version, "flashContent", "100%", "100%", "10.2.0", "expressInstall.swf",flashvars,params,attributes);
+                   </script>
+                   
                     <div id="flashContent">
                         <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="894" height="575" id="BankofTaiwanActive" align="middle">
                             <param name="movie" value="flash/BankofTaiwanActive.swf" />

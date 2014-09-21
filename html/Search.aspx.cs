@@ -21,12 +21,27 @@ public partial class Search : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                this.ibtPrize.Attributes.Add("onmouseover", "ChangeImg( this, 'images/search-icon1-o.jpg');");
-                this.ibtPrize.Attributes.Add("onmouseout", "ChangeImg( this, 'images/search-icon1.jpg');");
+                this.ibtSearch.Attributes.Add("onmouseover", "ChangeImg( this, 'image/03buttonb01.png');");
+                this.ibtSearch.Attributes.Add("onmouseout", "ChangeImg( this, 'image/03buttonb.png');");
+
+                this.ibtPrize.Attributes.Add("onmouseover", "ChangeImg( this, 'image/web03button03a.png');");
+                this.ibtPrize.Attributes.Add("onmouseout", "ChangeImg( this, 'image/web03button03.png');");
             }
         }
     }
-    protected void btSearch_Click(object sender, EventArgs e)
+    protected void CheckCount()
+    {
+        try
+        {
+            int usedcnt = int.Parse(this.lbPrize1.Text) + int.Parse(this.lbPrize2.Text) + int.Parse(this.lbPrize3.Text) + int.Parse(this.lbPrize4.Text) + int.Parse(this.lbPrize5.Text) + int.Parse(this.lbPrize6.Text);
+            this.lbUsedCount.Text = usedcnt.ToString();
+
+            int cnt =  usedcnt + int.Parse(this.lbNotUsed.Text);
+            this.lbTotal.Text = cnt.ToString();
+        }
+        catch { }
+    }
+    protected void ibtSearch_Click(object sender, ImageClickEventArgs e)
     {
         if (this.txtID.Text.Length == 10)
         {
@@ -62,22 +77,20 @@ public partial class Search : System.Web.UI.Page
                 this.lbPrize4.Text = myReader["Prize4"].ToString();
                 this.lbPrize5.Text = myReader["Prize5"].ToString();
                 this.lbPrize6.Text = myReader["Prize6"].ToString();
-                this.lbPrize7.Text = myReader["Prize7"].ToString();
-                this.lbPrize8.Text = myReader["Prize8"].ToString();
                 this.lbNotUsed.Text = myReader["NotUsed"].ToString();
 
-                if (int.Parse(this.lbNotUsed.Text) == 0)
-                {
-                    this.ibtPrize.Visible = false;
-                    this.hlDefault.Visible = true;
-                    this.lbDefault.Visible = true;
-                }
-                else
-                {
-                    this.ibtPrize.Visible = true;
-                    this.hlDefault.Visible = false;
-                    this.lbDefault.Visible = false;
-                }
+                   if (int.Parse(this.lbNotUsed.Text) == 0)
+                   {
+                       this.ibtPrize.Visible = false;
+                       this.hlDefault.Visible = true;
+                       this.lbDefault.Visible = true;
+                   }
+                   else
+                   {
+                       this.ibtPrize.Visible = true;
+                       this.hlDefault.Visible = false;
+                       this.lbDefault.Visible = false;
+                   }
             }
 
             myReader.Close();
@@ -91,18 +104,5 @@ public partial class Search : System.Web.UI.Page
         }
         else
             Message.Show(this.Page, "請輸入正確的身分證統一編號!", "");
-    }
-    protected void CheckCount()
-    {
-        try
-        {
-            int usedcnt = int.Parse(this.lbPrize1.Text) + int.Parse(this.lbPrize2.Text) + int.Parse(this.lbPrize3.Text) + int.Parse(this.lbPrize4.Text) + int.Parse(this.lbPrize5.Text)
-                 + int.Parse(this.lbPrize6.Text) + int.Parse(this.lbPrize7.Text) + int.Parse(this.lbPrize8.Text);
-            this.lbUsedCount.Text = usedcnt.ToString();
-
-            int cnt =  usedcnt + int.Parse(this.lbNotUsed.Text);
-            this.lbTotal.Text = cnt.ToString();
-        }
-        catch { }
     }
 }
