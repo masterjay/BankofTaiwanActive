@@ -135,9 +135,9 @@
 					
 				}
 				
-				mcMsg.txt_remaining_choices.text = "目前尚餘 "+m_Ballot.m_CanUsedTimes+" 次選擇機會";
-				mcMsg.txt_total_choices.text = "您共有 " + m_Ballot.m_AllTimes + " 次選擇機會";
-				mcMsg.txt_used_choices.text = "已選擇 "+ m_Ballot.m_UsedTimes +" 次";
+				mcMsg.txt_remaining_choices.text = "目前尚餘 "+m_Ballot.m_CanUsedTimes+" 次求籤機會";
+				mcMsg.txt_total_choices.text = "您共有 " + m_Ballot.m_AllTimes + " 次求籤機會";
+				mcMsg.txt_used_choices.text = "已求籤 "+ m_Ballot.m_UsedTimes +" 次";
 				//var tf:TextFormat = new TextFormat();
 				//m_Ballot.m_CanUsedTimes=0;
 				if(m_Ballot.m_CanUsedTimes == 0)
