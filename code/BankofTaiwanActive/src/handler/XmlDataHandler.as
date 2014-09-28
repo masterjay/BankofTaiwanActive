@@ -4,6 +4,8 @@ package handler
 	import flash.events.EventDispatcher;
 	import flash.net.URLVariables;
 	
+	import mx.controls.Alert;
+	
 	import event.TiBallotEvent;
 	
 	import lib.AppSetting;

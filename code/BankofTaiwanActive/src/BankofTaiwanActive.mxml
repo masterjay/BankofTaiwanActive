@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"  backgroundAlpha="0.0"  creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" initialize="application1_initializeHandler(event)"  backgroundAlpha="0.0"  creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
 	<fx:Script>
 		<![CDATA[
 			import flash.net.navigateToURL;
 			
 			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			
@@ -18,15 +19,36 @@
 			import lib.GameLog;
 			
 			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
+			
+			protected function application1_initializeHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				Security.allowDomain("*");
+				FlexGlobals.topLevelApplication.parameters.host=FlexGlobals.topLevelApplication.parameters["host"];
+				if(FlexGlobals.topLevelApplication.parameters.host)
+				{
+					AppSetting.DOMAIN = FlexGlobals.topLevelApplication.parameters.host
+				}
+				AppSetting.m_RootDomain = AppSetting.DOMAIN;
+				//Alert.show(" host "+FlexGlobals.topLevelApplication.parameters["host"]);
+				//Alert.show(" innerWidth "+FlexGlobals.topLevelApplication.parameters["innerWidth"]);
+				if(FlexGlobals.topLevelApplication.parameters["innerWidth"] && FlexGlobals.topLevelApplication.parameters["innerHeight"])
+				{
+					AppSetting.STAGE_WIDTH = FlexGlobals.topLevelApplication.parameters["innerWidth"];
+					AppSetting.STAGE_HEIGHT = FlexGlobals.topLevelApplication.parameters["innerHeight"];
+				}
+			}
+			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
-				Security.allowDomain("*");
+				
 				// TODO Auto-generated method stub
 				activeStage.addEventListener(TiBallotEvent.REQUEST_BALLOT_XML_DATA,fnRequestXMLDataHandler);
-				AppSetting.m_RootDomain = AppSetting.DOMAIN;
+				
 				godStage.addEventListener(TiBallotEvent.RESET_BALLOT_EVENT,fnResetBallot);
 				m_xmlDataHandler.fnRequestGameLog();
 				m_xmlDataHandler.addEventListener(TiBallotEvent.GET_GAMELOG_XML_DATA_EVENT,fnGetGameLogHandler);
+				ExternalInterface.addCallback("fnSwfResize",fnSwfResize);
 			}
 			
 			
@@ -57,12 +79,27 @@
 			{
 				if (eventObj.detail==Alert.OK) 
 				{
-					var myLink:String="../Default.aspx";
+					var myLink:String=AppSetting.DEFAULT_PAGE 
 					var linkRequest:URLRequest=new URLRequest(myLink);
 					navigateToURL(linkRequest,"_self");
 				}
 				
 			}
+			
+			private function fnSwfResize(deviceZoom:Number):void
+			{
+			
+				var nScaleX:Number = deviceZoom
+				nScaleX=Number(nScaleX.toFixed(2));
+				//Alert.show(nScaleX.toString());
+				this.scaleX =nScaleX;
+				this.scaleY=nScaleX;
+			}
+			
+			
+			
+			
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>

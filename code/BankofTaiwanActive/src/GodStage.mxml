@@ -14,6 +14,7 @@
 			
 			import handler.XmlDataHandler;
 			
+			import lib.AppSetting;
 			import lib.Ballot;
 			import lib.GameLog;
 			import lib.TiDisableTextField;
@@ -81,7 +82,7 @@
 			{
 				if (eventObj.detail==Alert.OK) 
 				{
-					var myLink:String="../Default.aspx";
+					var myLink:String= AppSetting.DEFAULT_PAGE 
 					var linkRequest:URLRequest=new URLRequest(myLink);
 					navigateToURL(linkRequest,"_self");
 				}
@@ -91,7 +92,7 @@
 			protected function fnGotoIndex(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				var myLink:String="../Default.aspx";
+				var myLink:String=AppSetting.DEFAULT_PAGE 
 				var linkRequest:URLRequest=new URLRequest(myLink);
 				navigateToURL(linkRequest,"_self");
 			}
