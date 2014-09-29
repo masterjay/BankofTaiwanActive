@@ -239,9 +239,9 @@
             func = webkitMobile;
         }
         //WebKit
-        else if (typeof document.body.style.webkitTextSizeAdjust === 'string') {
+    /*    else if (typeof document.body.style.webkitTextSizeAdjust === 'string') {
             func = webkit;
-        }
+        }*/
         //Opera
         else if (navigator.userAgent.indexOf('Opera') >= 0) {
             func = opera11;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" initialize="application1_initializeHandler(event)"  backgroundAlpha="0.0"  creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" backgroundColor="#82D5F7" initialize="application1_initializeHandler(event)"  backgroundAlpha="1.0"  creationComplete="application1_creationCompleteHandler(event)" xmlns:local="*">
 	<fx:Script>
 		<![CDATA[
 			import flash.net.navigateToURL;
@@ -37,6 +37,12 @@
 					AppSetting.STAGE_WIDTH = FlexGlobals.topLevelApplication.parameters["innerWidth"];
 					AppSetting.STAGE_HEIGHT = FlexGlobals.topLevelApplication.parameters["innerHeight"];
 				}
+				
+				if(FlexGlobals.topLevelApplication.parameters.zoom)
+				{
+					fnSwfResize(FlexGlobals.topLevelApplication.parameters.zoom);
+				}
+				
 			}
 			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
